@@ -15,7 +15,7 @@ function App() {
         <Route exact path='/' element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
         {/* url param */}
-        <Route path="/rooms/:single" element={<SingleRoom />} />
+        <Route path="/rooms/:slug" element={<SingleRoom />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </>
