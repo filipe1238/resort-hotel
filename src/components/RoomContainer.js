@@ -1,6 +1,6 @@
 import React from 'react'
 import RoomsFilter from './RoomFilter'
-import RoomsList from './RoomList'
+import RoomList from './RoomList'
 import { withRoomConsumer } from '../context'
 import Loading from './Loading'
 
@@ -10,10 +10,10 @@ function RoomsContainer({ context }) {
     return <Loading />
   }
   return (
-    < div >
+    <>
       <RoomsFilter rooms={rooms} />
-      <RoomsList rooms={sortedRooms} />
-    </div>)
+      <RoomList rooms={sortedRooms} />
+    </>)
 }
 
 export default withRoomConsumer(RoomsContainer)
