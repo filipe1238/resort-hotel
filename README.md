@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Resort Hotel project
 
 Resort Hotel project from John Smilga's in depth project on youtube https://www.youtube.com/watch?v=LXJOvkVYQqA 
 
