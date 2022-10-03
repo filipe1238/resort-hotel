@@ -1,8 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import items from './data'
-const RoomContext = React.createContext();
+import Client from './Contentful'
+const getData = async () => {
+  let result = await Client.getEntries()
+}
 
+
+
+
+const RoomContext = React.createContext();
 class RoomProvider extends Component {
+
   state = {
     rooms: [],
     sortedRooms: [],
@@ -18,21 +26,35 @@ class RoomProvider extends Component {
     breakfast: false,
     pets: false
   };
+  getData = async () => {
+    try {
+      let response = await Client.getEntries({
+        content_type: "exampleResortHotel",
+        /* order: "sys.createdAt" */
+        order: "fields.price"
 
+      });
+      let rooms = this.formatData(response.items);
+      let featuredRooms = rooms.filter(room => room.featured === true);
+      let maxPrice = Math.max(...rooms.map(item => item.price))
+      let maxSize = Math.max(...rooms.map(item => item.size))
+      this.setState({
+        rooms,
+        featuredRooms,
+        sortedRooms: rooms,
+        loading: false,
+        price: maxPrice,
+        maxPrice,
+        maxSize
+      })
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
   componentDidMount() {
-    let rooms = this.formatData(items);
-    let featuredRooms = rooms.filter(room => room.featured === true);
-    let maxPrice = Math.max(...rooms.map(item => item.price))
-    let maxSize = Math.max(...rooms.map(item => item.size))
-    this.setState({
-      rooms,
-      featuredRooms,
-      sortedRooms: rooms,
-      loading: false,
-      price: maxPrice,
-      maxPrice,
-      maxSize
-    })
+    this.getData();
+
   }
   formatData(items) {
     let tempItems = items.map(item => {
@@ -56,6 +78,7 @@ class RoomProvider extends Component {
 
   }
   filterRooms = () => {
+
     let {
       rooms, type, capacity, price, minSize, maxSize, breakfast, pets
     } = this.state
@@ -95,6 +118,7 @@ class RoomProvider extends Component {
     const room = tempRooms.find((room) => room.slug === slug)
     return room;
   }
+
   render() {
     return (
       < RoomContext.Provider value={{
